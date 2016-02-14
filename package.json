@@ -29,6 +29,7 @@
     "dev:no-debug": "npm run dev -- --no_debug",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
+    "test-node": "better-npm-run test-node",
     "deploy": "better-npm-run deploy",
     "flow:check": "babel-node bin/flow-check"
   },
@@ -59,7 +60,33 @@
         "NODE_ENV": "test",
         "DEBUG": "app:*"
       }
+    },
+    "test-node": {
+      "command": "nyc ava | tap-spec",
+      "env": {
+        "NODE_ENV": "test",
+        "DEBUG": "node:*"
+      }
     }
+  },
+  "ava": {
+    "files": [
+      "./tests/**/*.ava.js"
+    ],
+    "failFast": true,
+    "serial": true,
+    "tap": true,
+    "verbose": true
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-0"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ]
   },
   "xo": {
     "esnext": true,
@@ -99,6 +126,7 @@
     "yargs": "^3.32.0"
   },
   "devDependencies": {
+    "ava": "^0.11.0",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.1",
     "babel-eslint": "^4.1.8",
@@ -143,6 +171,7 @@
     "karma-tap-reporter": "0.0.6",
     "karma-webpack": "^1.7.0",
     "mocha": "^2.4.5",
+    "nyc": "^5.6.0",
     "postcss-loader": "^0.8.0",
     "postcss-modules": "^0.3.0",
     "react-addons-test-utils": "^0.14.7",
@@ -152,6 +181,7 @@
     "rucksack-css": "^0.8.5",
     "style-loader": "^0.13.0",
     "stylus-loader": "^1.5.1",
+    "tap-spec": "^4.1.1",
     "tape": "^4.4.0",
     "tape-catch": "^1.0.4",
     "url-loader": "^0.5.7",

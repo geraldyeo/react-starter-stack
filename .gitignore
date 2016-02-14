@@ -1,6 +1,7 @@
 .DS_STORE
 .env
 *.log
+.nyc_output
 
 node_modules
 dist
