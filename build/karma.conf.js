@@ -7,9 +7,11 @@ const print = debug('app:karma');
 print('Create configuration.');
 
 const karmaConfig = {
+	browsers: ['Electron'],
+	singleRun: !argv.watch,
+	frameworks: ['tap'],
 	basePath: '../', // project root in relation to bin/karma.js
 	files: [
-		'./node_modules/phantomjs-polyfill/bind-polyfill.js',
 		{
 			pattern: `./${config.dir_test}/test-bundler.js`,
 			watched: false,
@@ -17,33 +19,27 @@ const karmaConfig = {
 			included: true
 		}
 	],
-	singleRun: !argv.watch,
-	frameworks: ['mocha'],
 	preprocessors: {
 		[`${config.dir_test}/test-bundler.js`]: ['webpack', 'sourcemap']
 	},
-	reporters: ['spec'],
-	browsers: ['PhantomJS'],
+	reporters: ['tap'],
+	coverageReporter: {
+		reporters: config.coverage_reporters
+	},
 	webpack: {
+		node: {
+			fs: 'empty'
+		},
 		devtool: 'inline-source-map',
 		resolve: {
 			...webpackConfig.resolve,
 			alias: {
-				...webpackConfig.resolve.alias,
-				sinon: 'sinon/pkg/sinon.js'
+				...webpackConfig.resolve.alias
 			}
 		},
 		plugins: webpackConfig.plugins,
 		module: {
-			noParse: [
-				/\/sinon\.js/
-			],
-			loaders: webpackConfig.module.loaders.concat([
-				{
-					test: /sinon\/pkg\/sinon\.js/,
-					loader: 'imports?define=>false,require=>false'
-				}
-			])
+			loaders: webpackConfig.module.loaders
 		},
 		/* eslint-disable */
 		externals: {
@@ -53,15 +49,11 @@ const karmaConfig = {
 			'react/lib/ExecutionEnvironment': true,
 			'react/lib/ReactContext': 'window',
 			'text-encoding': 'window'
-		},
+		}
 		/* eslint-enable */
-		sassLoader: webpackConfig.sassLoader
 	},
 	webpackMiddleware: {
 		noInfo: true
-	},
-	coverageReporter: {
-		reporters: config.coverage_reporters
 	}
 };
 

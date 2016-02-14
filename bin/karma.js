@@ -1,4 +1,2 @@
 import karmaConfig from '../build/karma.conf';
-
-// because Karma is special
-module.exports = karmaConfig;
+module.exports = karmaConfig; // because Karma is special

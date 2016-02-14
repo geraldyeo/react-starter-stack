@@ -61,19 +61,21 @@
       }
     }
   },
-	"xo": {
-		"esnext": true,
-    "plugins": ["react"],
-		"globals": [
-			"process.env",
-			"NODE_ENV",
-			"__DEV__",
-			"__PROD__",
-			"__TEST__",
-			"__DEBUG__",
-			"__DEBUG_NEW_WINDOW__",
-			"__BASENAME__"
-		]
+  "xo": {
+    "esnext": true,
+    "plugins": [
+      "react"
+    ],
+    "globals": [
+      "process.env",
+      "NODE_ENV",
+      "__DEV__",
+      "__PROD__",
+      "__TEST__",
+      "__DEBUG__",
+      "__DEBUG_NEW_WINDOW__",
+      "__BASENAME__"
+    ]
   },
   "dependencies": {
     "better-npm-run": "0.0.7",

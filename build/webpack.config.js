@@ -1,6 +1,6 @@
 import webpack from 'webpack';
 import cssnano from 'cssnano';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+// import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import debug from 'debug';
 import config from '../config';
@@ -46,17 +46,17 @@ webpackConfig.output = {
 //     Plugins
 // ======================================== //
 webpackConfig.plugins = [
-	new webpack.DefinePlugin(config.globals),
-	new HtmlWebpackPlugin({
-		template: paths.client('index.html'),
-		hash: false,
-		favicon: paths.client('static/favicon.ico'),
-		filename: 'index.html',
-		inject: 'body',
-		minify: {
-			collapseWhitespace: true
-		}
-	})
+	new webpack.DefinePlugin(config.globals)
+	// new HtmlWebpackPlugin({
+	// 	template: paths.client('index.html'),
+	// 	hash: false,
+	// 	favicon: paths.client('static/favicon.ico'),
+	// 	filename: 'index.html',
+	// 	inject: 'body',
+	// 	minify: {
+	// 		collapseWhitespace: true
+	// 	}
+	// })
 ];
 
 if (__DEV__) {
