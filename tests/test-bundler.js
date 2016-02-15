@@ -8,7 +8,7 @@
 // ======================================== //
 //     Require Tests
 // ======================================== //
-// require all `tests/**/*.spec.js`
+// require all `tests/**/*.tape.js`
 const testsContext = require.context('./', true, /\.tape\.js$/);
 testsContext.keys().forEach(testsContext);
 
