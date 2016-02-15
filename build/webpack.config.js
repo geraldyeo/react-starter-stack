@@ -137,6 +137,7 @@ webpackConfig.module.loaders.push({
 		'style',
 		cssLoader,
 		'postcss',
+		'csslint',
 		'sass?sourceMap'
 	]
 });
@@ -147,7 +148,8 @@ webpackConfig.module.loaders.push({
 	loaders: [
 		'style',
 		cssLoader,
-		'postcss'
+		'postcss',
+		'csslint'
 	]
 });
 
