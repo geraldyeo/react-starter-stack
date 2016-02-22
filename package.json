@@ -88,12 +88,14 @@
     ]
   },
   "xo": {
-    "esnext": true,
-    "plugins": [
-      "react"
-    ],
+    "extends": "xo-react",
     "ignores": [
       "server/middleware/webpack-proxy.js"
+    ],
+    "envs": [
+      "browser",
+      "node",
+      "es6"
     ],
     "globals": [
       "process.env",
@@ -152,6 +154,7 @@
     "eslint": "^2.1.0",
     "eslint-config-standard": "^5.1.0",
     "eslint-config-standard-react": "^2.3.0",
+    "eslint-config-xo-react": "^0.4.0",
     "eslint-loader": "^1.3.0",
     "eslint-plugin-babel": "^3.1.0",
     "eslint-plugin-flow-vars": "^0.1.3",
