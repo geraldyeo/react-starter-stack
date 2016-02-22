@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import cssnano from 'cssnano';
+import rucksack from 'rucksack-css';
 // import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import debug from 'debug';
@@ -16,7 +17,7 @@ const webpackConfig = {
 	devtool: config.compiler_devtool,
 	resolve: {
 		root: paths.base(config.dir_client),
-		extensions: ['', '.js', '.jsx']
+		extensions: ['', '.js', '.jsx', '.styl']
 	},
 	module: {}
 };
@@ -47,16 +48,6 @@ webpackConfig.output = {
 // ======================================== //
 webpackConfig.plugins = [
 	new webpack.DefinePlugin(config.globals)
-	// new HtmlWebpackPlugin({
-	// 	template: paths.client('index.html'),
-	// 	hash: false,
-	// 	favicon: paths.client('static/favicon.ico'),
-	// 	filename: 'index.html',
-	// 	inject: 'body',
-	// 	minify: {
-	// 		collapseWhitespace: true
-	// 	}
-	// })
 ];
 
 if (__DEV__) {
@@ -92,12 +83,17 @@ if (!__TEST__) {
 // ======================================== //
 webpackConfig.module.preLoaders = [{
 	test: /\.(js|jsx)$/,
-	loader: 'eslint',
+	loader: 'xo',
 	exclude: /node_modules/
 }];
 
-webpackConfig.eslint = {
-	configFile: paths.base('.eslintrc'),
+webpackConfig.module.preLoaders.push({
+	test: /\.styl$/,
+	loader: 'stylint',
+	exclude: /node_modules/
+});
+
+webpackConfig.xo = {
 	emitWarning: __DEV__
 };
 
@@ -131,14 +127,13 @@ const cssLoader = config.compiler_css_modules ? [
 ].join('&') : 'css?sourceMap';
 
 webpackConfig.module.loaders.push({
-	test: /\.scss$/,
+	test: /\.styl$/,
 	include: /src/,
 	loaders: [
 		'style',
 		cssLoader,
 		'postcss',
-		'csslint',
-		'sass?sourceMap'
+		'stylus?sourceMap'
 	]
 });
 
@@ -148,20 +143,19 @@ webpackConfig.module.loaders.push({
 	loaders: [
 		'style',
 		cssLoader,
-		'postcss',
-		'csslint'
+		'postcss'
 	]
 });
 
-// Don't treat global SCSS as modules
+// Don't treat global stylus as modules
 webpackConfig.module.loaders.push({
-	test: /\.scss$/,
+	test: /\.styl$/,
 	exclude: /src/,
 	loaders: [
 		'style',
 		'css?sourceMap',
 		'postcss',
-		'sass?sourceMap'
+		'stylus?sourceMap'
 	]
 });
 
@@ -176,11 +170,12 @@ webpackConfig.module.loaders.push({
 	]
 });
 
-webpackConfig.sassLoader = {
+webpackConfig.stylus = {
 	includePaths: paths.client('styles')
 };
 
 webpackConfig.postcss = [
+	rucksack(),
 	cssnano({
 		autoprefixer: {
 			add: true,
