@@ -6,8 +6,8 @@ import NotFoundView from 'views/NotFoundView';
 
 export default () => (
 	<Route path="/" component={CoreLayout}>
-		<IndexRoute component={HomeView} />
-		<Route path="/404" component={NotFoundView} />
-		<Redirect from="*" to="/404" />
+		<IndexRoute component={HomeView}/>
+		<Route path="/404" component={NotFoundView}/>
+		<Redirect from="*" to="/404"/>
 	</Route>
 );

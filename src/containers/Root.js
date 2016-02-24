@@ -27,7 +27,7 @@ export default class Root extends Component {
 				}
 			} else if (!window.devToolsExtension) {
 				const DevTools = require('containers/DevTools').default;
-				return <DevTools />;
+				return <DevTools/>;
 			}
 		}
 	}

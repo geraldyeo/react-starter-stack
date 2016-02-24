@@ -40,7 +40,7 @@ export class HomeView extends Component {
 					>
 					Increment
 				</button>
-				<hr />
+				<hr/>
 				<Link to="/404">See 404 page</Link>
 			</div>
 		);

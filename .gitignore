@@ -1,6 +1,7 @@
 .DS_STORE
 .env
 *.log
+webpack-assets.json
 .nyc_output
 
 node_modules

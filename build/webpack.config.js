@@ -3,12 +3,15 @@ import cssnano from 'cssnano';
 import rucksack from 'rucksack-css';
 // import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
 import debug from 'debug';
+import universalConfig from './universal.config';
 import config from '../config';
 
 const print = debug('app:webpack:config');
 const paths = config.utils_paths;
 const {__DEV__, __PROD__, __TEST__} = config.globals;
+const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(universalConfig);
 
 print('Create configuration.');
 const webpackConfig = {
@@ -54,7 +57,8 @@ if (__DEV__) {
 	debug('Enable plugins for live development (HMR, NoErrors).');
 	webpackConfig.plugins.push(
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NoErrorsPlugin()
+		new webpack.NoErrorsPlugin(),
+		webpackIsomorphicToolsPlugin.development()
 	);
 } else if (__PROD__) {
 	debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).');
@@ -67,7 +71,8 @@ if (__DEV__) {
 				dead_code: true, // eslint-disable-line
 				warnings: false
 			}
-		})
+		}),
+		webpackIsomorphicToolsPlugin
 	);
 }
 
@@ -195,13 +200,7 @@ webpackConfig.postcss = [
 // ======================================== //
 /* eslint-disable */
 webpackConfig.module.loaders.push(
-  { test: /\.woff(\?.*)?$/,  loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff' },
-  { test: /\.woff2(\?.*)?$/, loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2' },
-  { test: /\.otf(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype' },
-  { test: /\.ttf(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' },
-  { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
-  { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
-  { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' }
+  { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' }
 );
 /* eslint-enable */
 

@@ -1,10 +1,9 @@
-import debug from 'debug';
+import WebpackIsomorphicTools from 'webpack-isomorphic-tools';
 import config from '../config';
-import server from '../server/main';
+import universalConfig from '../build/universal.config';
 
-const print = debug('app:bin:server');
-const port = config.server_port;
-const host = config.server_host;
-
-server.listen(port);
-print(`Server is now running at ${host}:${port}.`);
+global.webpackIsomorphicTools = new WebpackIsomorphicTools(universalConfig)
+	.development(config.globals.__DEV__)
+	.server(config.path_base, function () {
+		require('../server/main');
+	});

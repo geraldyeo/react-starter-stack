@@ -8,6 +8,6 @@ export default createDevTools(
 		toogleVisibilityKey="ctrl-h"
 		changePositionKey="ctrl-q"
 		>
-		<LogMonitor />
+		<LogMonitor/>
 	</DockMonitor>
 );
