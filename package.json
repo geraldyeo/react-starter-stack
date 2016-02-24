@@ -122,6 +122,7 @@
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-helmet": "^2.3.1",
+    "react-isomorphic-render": "^2.1.20",
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
     "react-router-redux": "^3.0.0",

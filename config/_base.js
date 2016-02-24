@@ -2,24 +2,30 @@
 import path from 'path';
 import {argv} from 'yargs';
 import debug from 'debug';
-import pkg from '../package.json';
+const pkg = require('../package.json');
 
 const print = debug('app:config:_base');
 const config = {
 	env: process.env.NODE_ENV || 'development',
 
-	// Project Structure
+	// ======================================== //
+	//     Project Structure
+	// ======================================== //
 	path_base: path.resolve(__dirname, '../'),
 	dir_client: 'src',
 	dir_dist: 'dist',
 	dir_server: 'server',
 	dir_test: 'tests',
 
-	// Server Configuration
+	// ======================================== //
+	//     Server Configuration
+	// ======================================== //
 	server_host: 'localhost',
 	server_port: process.env.PORT || 3000,
 
-	// Compiler Configuration
+	// ======================================== //
+	//     Compiler Configuration
+	// ======================================== //
 	compiler_css_modules: true,
 	compiler_devtool: 'inline-source-map',
 	compiler_hash_type: 'hash',
@@ -40,7 +46,9 @@ const config = {
 		'redux'
 	],
 
-	// Test Configuration
+	// ======================================== //
+	//     Test Configuration
+	// ======================================== //
 	coverage_enabled: !argv.watch,
 	coverage_reporters: [
 		{type: 'text-summary'},
@@ -48,7 +56,16 @@ const config = {
 	]
 };
 
-// Environment
+// ======================================== //
+//
+// All Internal Configuration Below
+// Edit at Your Own Risk
+//
+// ======================================== //
+
+// ======================================== //
+//     Environment
+// ======================================== //
 // N.B.: globals added here must _also_ be added to package.json `xo` property
 config.globals = {
 	'process.env': {
@@ -63,9 +80,9 @@ config.globals = {
 	'__BASENAME__': JSON.stringify(process.env.BASENAME || '')
 };
 
-// Validate Vendor Dependencies
-// const pkg = require('../package.json');
-
+// ======================================== //
+//     Validate Vendor Dependencies
+// ======================================== //
 config.compiler_vendor = config.compiler_vendor
 	.filter(dep => {
 		if (pkg.dependencies[dep]) {
@@ -79,7 +96,9 @@ config.compiler_vendor = config.compiler_vendor
 		);
 	});
 
-// Utilities
+// ======================================== //
+//     Utilities
+// ======================================== //
 config.utils_paths = (() => {
 	const resolve = path.resolve;
 	const base = (...args) => resolve.apply(resolve, [config.path_base, ...args]);
