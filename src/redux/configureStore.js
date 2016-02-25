@@ -1,27 +1,18 @@
-import {applyMiddleware, compose, createStore} from 'redux';
-import {syncHistory} from 'react-router-redux';
-import thunk from 'redux-thunk';
+import {createStore} from 'redux';
+import getEnhancers from './enhancers';
 import rootReducer from './rootReducer';
 
 export default function configureStore({initialState = {}, history}) {
-	// Sync with router via history instance (main.js)
-	const routerMiddleware = syncHistory(history);
+	const {routerMiddleware, enhancers} = getEnhancers(history);
+	const store = createStore(rootReducer, initialState, enhancers);
 
-	// Compose final middleware and use devtools in debug environment
-	let middleware = applyMiddleware(thunk, routerMiddleware);
-	if (__DEBUG__) {
-		const devTools = window.devToolsExtension ? window.devToolsExtension() :
-			require('containers/DevTools').default.instrument();
-		middleware = compose(middleware, devTools);
+	// Required for replaying actions from devtools to work
+	if (__DEV__ && __CLIENT__ && __DEBUG__) {
+		routerMiddleware.listenForReplays(store);
 	}
 
-	// Create final store and subscribe router in debug env ie. for devtools
-	const store = middleware(createStore)(rootReducer, initialState);
-	if (__DEBUG__) {
-		routerMiddleware.listenForReplays(store, ({router}) => router.location);
-	}
-
-	if (module.hot) {
+	if (__DEV__ && module.hot) {
+		// Enable Webpack hot module replacement for reducers
 		module.hot.accept('./rootReducer', () => {
 			const nextRootReducer = require('./rootReducer').default;
 			store.replaceReducer(nextRootReducer);

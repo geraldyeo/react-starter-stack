@@ -114,12 +114,15 @@
     "globals": [
       "process.env",
       "NODE_ENV",
+      "__CLIENT__",
+      "__SERVER__",
       "__DEV__",
       "__PROD__",
       "__TEST__",
       "__DEBUG__",
       "__DEBUG_NEW_WINDOW__",
       "__BASENAME__",
+      "__NO_SSR__",
 			"webpackIsomorphicTools"
     ]
   },
