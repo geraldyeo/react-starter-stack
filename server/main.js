@@ -1,10 +1,13 @@
 import Koa from 'koa';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-// import {RouterContext, match} from 'react-router';
+import {Provider} from 'react-redux';
+import {createMemoryHistory, match, RouterContext} from 'react-router';
+import {syncHistoryWithStore} from 'react-router-redux';
 import debug from 'debug';
 import config from '../config';
 import configureStore from '../src/redux/configureStore';
+import routes from '../src/routes';
 import Html from '../src/containers/Html';
 
 const print = debug('app:server');
@@ -17,7 +20,9 @@ app.use(async ctx => {
 		webpackIsomorphicTools.refresh();
 	}
 
-	const store = configureStore({});
+	const memoryHistory = createMemoryHistory(ctx.req.path);
+	const store = configureStore({history: memoryHistory});
+	const history = syncHistoryWithStore(memoryHistory, store);
 
 	const hydrateOnClient = () => {
 		const content = renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>);
@@ -29,7 +34,26 @@ app.use(async ctx => {
 		return;
 	}
 
-	hydrateOnClient();
+	match({history, routes, location: ctx.req.url}, (error, redirectLocation, renderProps) => {
+		if (error) {
+			ctx.status = 500;
+			hydrateOnClient();
+		} else if (redirectLocation) {
+			ctx.redirect(redirectLocation.pathname + redirectLocation.search);
+		} else if (renderProps) {
+			const component = (
+				<Provider store={store}>
+					<RouterContext {...renderProps}/>
+				</Provider>
+			);
+
+			ctx.status = 200;
+			ctx.body = `<!doctype html>\n${renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>)}`;
+		} else {
+			ctx.status = 404;
+			hydrateOnClient();
+		}
+	});
 });
 
 // ======================================== //

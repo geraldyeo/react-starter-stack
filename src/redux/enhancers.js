@@ -1,15 +1,11 @@
 import {applyMiddleware, compose} from 'redux';
-import {syncHistory} from 'react-router-redux';
+import {routerMiddleware} from 'react-router-redux';
 import thunk from 'redux-thunk';
 
 export default function getEnhancers(history) {
-	let enhancers = applyMiddleware(thunk);
-	let routerMiddleware;
+	let enhancers = applyMiddleware(thunk, routerMiddleware(history));
 
 	if (__CLIENT__) {
-		routerMiddleware = syncHistory(history);
-		enhancers = compose(enhancers, applyMiddleware(routerMiddleware));
-
 		if (__DEV__ && __DEBUG__) {
 			const devTools = window.devToolsExtension ?
 				window.devToolsExtension() :
@@ -18,8 +14,5 @@ export default function getEnhancers(history) {
 		}
 	}
 
-	return {
-		routerMiddleware,
-		enhancers
-	};
+	return enhancers;
 }

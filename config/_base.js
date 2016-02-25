@@ -72,7 +72,7 @@ config.globals = {
 		'NODE_ENV': JSON.stringify(config.env)
 	},
 	'NODE_ENV': config.env,
-	'__CLIENT': true,
+	'__CLIENT__': true,
 	'__SERVER__': false,
 	'__DEV__': config.env === 'development',
 	'__PROD__': config.env === 'production',

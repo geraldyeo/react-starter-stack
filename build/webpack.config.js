@@ -29,11 +29,11 @@ const webpackConfig = {
 //     Entry Points
 // ======================================== //
 const APP_ENTRY_PATH = `${paths.base(config.dir_client)}/main.js`;
+const webpackHmr = `webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`;
 
 webpackConfig.entry = {
-	app: __DEV__ ?
-		[APP_ENTRY_PATH, `webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`] :
-		[APP_ENTRY_PATH],
+	app: __DEV__ ? ['babel-polyfill', APP_ENTRY_PATH, webpackHmr] :
+		['babel-polyfill', APP_ENTRY_PATH],
 	vendor: config.compiler_vendor
 };
 
@@ -54,14 +54,14 @@ webpackConfig.plugins = [
 ];
 
 if (__DEV__) {
-	debug('Enable plugins for live development (HMR, NoErrors).');
+	print('Enable plugins for live development (HMR, NoErrors).');
 	webpackConfig.plugins.push(
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin(),
 		webpackIsomorphicToolsPlugin.development()
 	);
 } else if (__PROD__) {
-	debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).');
+	print('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).');
 	webpackConfig.plugins.push(
 		new webpack.optimize.OccurrenceOrderPlugin(),
 		new webpack.optimize.DedupePlugin(),
@@ -211,7 +211,7 @@ webpackConfig.module.loaders.push(
 // need to use the extractTextPlugin to fix this issue:
 // http://stackoverflow.com/questions/34133808/webpack-ots-parsing-error-loading-fonts/34133809#34133809
 if (!__DEV__) {
-	debug('Apply ExtractTextPlugin to CSS loaders.');
+	print('Apply ExtractTextPlugin to CSS loaders.');
 	webpackConfig.module.loaders.filter(
 		loader => loader.loaders && loader.loaders.find(name => /css/.test(name.split('?')[0]))
 	).forEach(
