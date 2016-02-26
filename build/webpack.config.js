@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import cssnano from 'cssnano';
 import rucksack from 'rucksack-css';
-// import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
 import debug from 'debug';
@@ -20,7 +19,7 @@ const webpackConfig = {
 	devtool: config.compiler_devtool,
 	resolve: {
 		root: paths.base(config.dir_client),
-		extensions: ['', '.js', '.jsx', '.styl']
+		extensions: ['', '.js', '.jsx', '.json', '.styl']
 	},
 	module: {}
 };
