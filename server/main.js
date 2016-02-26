@@ -20,7 +20,7 @@ app.use(async ctx => {
 		webpackIsomorphicTools.refresh();
 	}
 
-	const memoryHistory = createMemoryHistory(ctx.req.path);
+	const memoryHistory = createMemoryHistory(ctx.path);
 	const store = configureStore({history: memoryHistory});
 	const history = syncHistoryWithStore(memoryHistory, store);
 
@@ -34,7 +34,7 @@ app.use(async ctx => {
 		return;
 	}
 
-	match({history, routes, location: ctx.req.url}, (error, redirectLocation, renderProps) => {
+	match({history, routes, location: ctx.url}, (error, redirectLocation, renderProps) => {
 		if (error) {
 			ctx.status = 500;
 			hydrateOnClient();
