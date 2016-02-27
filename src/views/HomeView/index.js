@@ -19,11 +19,17 @@ const mapStateToProps = (state) => ({
 export class HomeView extends Component {
 	static propTypes = {
 		counter: PropTypes.number.isRequired,
-		increment: PropTypes.func.isRequired
+		increment: PropTypes.func.isRequired,
+		decrement: PropTypes.func.isRequired
 	};
 
-	handleClick = () => {
-		this.props.increment(1);
+	handleClick = (e) => {
+		const el = e.target;
+		if (el.classList.contains('increment')) {
+			this.props.increment(1);
+		} else if (el.classList.contains('decrement')) {
+			this.props.decrement(1);
+		}
 	}
 
 	render() {
@@ -35,10 +41,15 @@ export class HomeView extends Component {
 					{' '}
 					<span className={classes['counter--green']}>{this.props.counter}</span>
 				</h2>
-				<button className="btn btn-default"
+				<button className="btn btn-default increment"
 					onClick={this.handleClick}
 					>
-					Increment
+					+
+				</button>
+				<button className="btn btn-default decrement"
+					onClick={this.handleClick}
+					>
+					-
 				</button>
 				<hr/>
 				<Link to="/404">See 404 page</Link>
