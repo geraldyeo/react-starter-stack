@@ -38,6 +38,7 @@ const config = {
 		colors: true
 	},
 	compiler_vendor: [
+		'babel-polyfill',
 		'history',
 		'react',
 		'react-redux',

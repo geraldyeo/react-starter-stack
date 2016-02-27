@@ -24,11 +24,9 @@
     "lint": "xo",
     "lint:fix": "npm run lint -- --fix",
     "start": "better-npm-run start",
-
     "dev": "npm-run-all --parallel dev:client dev:server",
     "dev:client": "better-npm-run dev:client",
     "dev:server": "better-npm-run dev:server",
-
     "dev:nw": "npm run dev -- --nw",
     "dev:no-debug": "npm run dev -- --no_debug",
     "test": "better-npm-run test",
@@ -123,10 +121,11 @@
       "__DEBUG_NEW_WINDOW__",
       "__BASENAME__",
       "__NO_SSR__",
-			"webpackIsomorphicTools"
+      "webpackIsomorphicTools"
     ]
   },
   "dependencies": {
+    "babel-polyfill": "^6.5.0",
     "better-npm-run": "0.0.7",
     "co-request": "^1.0.0",
     "debug": "^2.2.0",

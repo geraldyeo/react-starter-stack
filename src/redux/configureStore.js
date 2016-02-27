@@ -1,6 +1,6 @@
 import {createStore} from 'redux';
 import getEnhancers from './enhancers';
-import rootReducer from './rootReducer';
+import {rootReducer} from './modules';
 
 export default function configureStore({initialState = {}, history}) {
 	const enhancers = getEnhancers(history);
@@ -8,8 +8,8 @@ export default function configureStore({initialState = {}, history}) {
 
 	if (__DEV__ && module.hot) {
 		// Enable Webpack hot module replacement for reducers
-		module.hot.accept('./rootReducer', () => {
-			const nextRootReducer = require('./rootReducer').default;
+		module.hot.accept('./modules', () => {
+			const nextRootReducer = require('./modules').rootReducer;
 			store.replaceReducer(nextRootReducer);
 		});
 	}

@@ -20,7 +20,8 @@ export class HomeView extends Component {
 	static propTypes = {
 		counter: PropTypes.number.isRequired,
 		increment: PropTypes.func.isRequired,
-		decrement: PropTypes.func.isRequired
+		decrement: PropTypes.func.isRequired,
+		triple: PropTypes.func.isRequired
 	};
 
 	handleClick = (e) => {
@@ -29,6 +30,8 @@ export class HomeView extends Component {
 			this.props.increment(1);
 		} else if (el.classList.contains('decrement')) {
 			this.props.decrement(1);
+		} else if (el.classList.contains('triple')) {
+			this.props.triple();
 		}
 	}
 
@@ -41,6 +44,11 @@ export class HomeView extends Component {
 					{' '}
 					<span className={classes['counter--green']}>{this.props.counter}</span>
 				</h2>
+				<button className="btn btn-default triple"
+					onClick={this.handleClick}
+					>
+					*3
+				</button>
 				<button className="btn btn-default increment"
 					onClick={this.handleClick}
 					>
