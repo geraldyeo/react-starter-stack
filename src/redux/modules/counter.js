@@ -6,25 +6,24 @@ import {put, select} from 'redux-saga/effects';
 //     Constants
 // ======================================== //
 
-export const COUNTER_INCREMENT = '@@app/COUNTER_INCREMENT';
-export const COUNTER_DECREMENT = '@@app/COUNTER_DECREMENT';
-export const COUNTER_TRIPLE = '@@app/COUNTER_TRIPLE';
+const COUNTER_INCREMENT = '@@app/COUNTER_INCREMENT';
+const COUNTER_DECREMENT = '@@app/COUNTER_DECREMENT';
+const COUNTER_TRIPLE = '@@app/COUNTER_TRIPLE';
 
 // ======================================== //
 //     State helpers
 // ======================================== //
 
-export const getCounter = (state) => state.get('counter');
+const getCounter = (state) => state.get('counter');
 
 // ======================================== //
 //     Actions
 // ======================================== //
 
-export const increment = createAction(COUNTER_INCREMENT, (amount = 1) => amount);
-export const decrement = createAction(COUNTER_DECREMENT, (amount = 1) => amount);
-export const triple = createAction(COUNTER_TRIPLE);
-
-export const actions = {increment, decrement, triple};
+const increment = createAction(COUNTER_INCREMENT, (amount = 1) => amount);
+const decrement = createAction(COUNTER_DECREMENT, (amount = 1) => amount);
+const triple = createAction(COUNTER_TRIPLE);
+const actions = {increment, decrement, triple};
 
 // ======================================== //
 //     Actions Map
@@ -39,18 +38,18 @@ const ACTIONS_MAP = {
 //     Reducer
 // ======================================== //
 
-export const reducer = handleActions(ACTIONS_MAP, 0);
+const reducer = handleActions(ACTIONS_MAP, 0);
 
 // ======================================== //
 //     Saga
 // ======================================== //
 
-export function * counterTriple() {
+function * counterTriple() {
 	let counter = yield select(getCounter);
 	yield put(increment(counter * 2));
 }
 
-export function * watchCounterTriple() {
+function * saga() {
 	while (true) { // eslint-disable-line no-constant-condition
 		yield * takeEvery(COUNTER_TRIPLE, counterTriple);
 	}
@@ -60,7 +59,17 @@ export function * watchCounterTriple() {
 //     API
 // ======================================== //
 
-export default {
+const api = {
+	COUNTER_INCREMENT,
+	COUNTER_DECREMENT,
+	COUNTER_TRIPLE,
+	getCounter,
+	increment,
+	decrement,
+	triple,
+	actions,
 	reducer,
-	saga: watchCounterTriple
+	saga
 };
+
+export default api;

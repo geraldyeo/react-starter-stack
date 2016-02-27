@@ -21,7 +21,7 @@ export default function createDevToolsWindow(store) {
 
 		ReactDOM.render(
 			<Provider store={store}>
-				<DevTools />
+				<DevTools/>
 			</Provider>,
 			win.document.getElementById('react-devtools-root')
 		);
