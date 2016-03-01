@@ -3,24 +3,25 @@ import {routerReducer as routing} from 'react-router-redux';
 import {fork} from 'redux-saga/effects';
 import {reducer as counter, saga as watchCounterTriple} from './counter';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
 	counter,
 	routing
 });
 
-function * rootSaga() {
-	yield [
-		fork(watchCounterTriple)
-	];
+function rootSagaGenFac() {
+	return function * rootSaga() {
+		yield [
+			fork(watchCounterTriple)
+		];
+	};
 }
+export const rootSaga = rootSagaGenFac();
 
 // ======================================== //
 //     API
 // ======================================== //
 
-const api = {
-	rootReducer,
-	rootSaga
+export default {
+	rootReducer: rootReducer,
+	rootSaga: rootSagaGenFac()
 };
-
-export default api;

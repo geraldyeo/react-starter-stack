@@ -6,24 +6,24 @@ import {put, select} from 'redux-saga/effects';
 //     Constants
 // ======================================== //
 
-const COUNTER_INCREMENT = '@@app/COUNTER_INCREMENT';
-const COUNTER_DECREMENT = '@@app/COUNTER_DECREMENT';
-const COUNTER_TRIPLE = '@@app/COUNTER_TRIPLE';
+export const COUNTER_INCREMENT = '@@app/COUNTER_INCREMENT';
+export const COUNTER_DECREMENT = '@@app/COUNTER_DECREMENT';
+export const COUNTER_TRIPLE = '@@app/COUNTER_TRIPLE';
 
 // ======================================== //
 //     State helpers
 // ======================================== //
 
-const getCounter = (state) => state.get('counter');
+export const getCounter = (state) => state.counter;
 
 // ======================================== //
 //     Actions
 // ======================================== //
 
-const increment = createAction(COUNTER_INCREMENT, (amount = 1) => amount);
-const decrement = createAction(COUNTER_DECREMENT, (amount = 1) => amount);
-const triple = createAction(COUNTER_TRIPLE);
-const actions = {increment, decrement, triple};
+export const increment = createAction(COUNTER_INCREMENT, (amount = 1) => amount);
+export const decrement = createAction(COUNTER_DECREMENT, (amount = 1) => amount);
+export const triple = createAction(COUNTER_TRIPLE);
+export const actions = {increment, decrement, triple};
 
 // ======================================== //
 //     Actions Map
@@ -38,28 +38,34 @@ const ACTIONS_MAP = {
 //     Reducer
 // ======================================== //
 
-const reducer = handleActions(ACTIONS_MAP, 0);
+export const reducer = handleActions(ACTIONS_MAP, 0);
 
 // ======================================== //
 //     Saga
 // ======================================== //
 
-function * counterTriple() {
-	let counter = yield select(getCounter);
-	yield put(increment(counter * 2));
+// https://phabricator.babeljs.io/T7041#73937
+function counterTripleGenFac() {
+	return function * counterTriple() {
+		let counter = yield select(getCounter);
+		yield put(increment(counter * 2));
+	};
 }
 
-function * saga() {
-	while (true) { // eslint-disable-line no-constant-condition
-		yield * takeEvery(COUNTER_TRIPLE, counterTriple);
-	}
+function sagaGenFac() {
+	return function * saga() {
+		while (true) { // eslint-disable-line no-constant-condition
+			yield * takeEvery(COUNTER_TRIPLE, counterTripleGenFac());
+		}
+	};
 }
+export const saga = sagaGenFac();
 
 // ======================================== //
 //     API
 // ======================================== //
 
-const api = {
+export default {
 	COUNTER_INCREMENT,
 	COUNTER_DECREMENT,
 	COUNTER_TRIPLE,
@@ -69,7 +75,5 @@ const api = {
 	triple,
 	actions,
 	reducer,
-	saga
+	saga: sagaGenFac()
 };
-
-export default api;
