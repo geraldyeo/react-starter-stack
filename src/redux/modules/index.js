@@ -8,20 +8,8 @@ export const rootReducer = combineReducers({
 	routing
 });
 
-function rootSagaGenFac() {
-	return function * rootSaga() {
-		yield [
-			fork(watchCounterTriple)
-		];
-	};
+export function * rootSaga() {
+	yield [
+		fork(watchCounterTriple)
+	];
 }
-export const rootSaga = rootSagaGenFac();
-
-// ======================================== //
-//     API
-// ======================================== //
-
-export default {
-	rootReducer: rootReducer,
-	rootSaga: rootSagaGenFac()
-};

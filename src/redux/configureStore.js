@@ -1,6 +1,6 @@
 import {createStore} from 'redux';
 import getEnhancers from './enhancers';
-import {rootReducer} from './modules/index';
+import {rootReducer} from './modules';
 
 export default function configureStore({initialState = {}, history}) {
 	const enhancers = getEnhancers(history);

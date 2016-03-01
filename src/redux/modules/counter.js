@@ -45,35 +45,13 @@ export const reducer = handleActions(ACTIONS_MAP, 0);
 // ======================================== //
 
 // https://phabricator.babeljs.io/T7041#73937
-function counterTripleGenFac() {
-	return function * counterTriple() {
-		let counter = yield select(getCounter);
-		yield put(increment(counter * 2));
-	};
+function * counterTriple() {
+	let counter = yield select(getCounter);
+	yield put(increment(counter * 2));
 }
 
-function sagaGenFac() {
-	return function * saga() {
-		while (true) { // eslint-disable-line no-constant-condition
-			yield * takeEvery(COUNTER_TRIPLE, counterTripleGenFac());
-		}
-	};
+export function * saga() {
+	while (true) { // eslint-disable-line no-constant-condition
+		yield * takeEvery(COUNTER_TRIPLE, counterTriple);
+	}
 }
-export const saga = sagaGenFac();
-
-// ======================================== //
-//     API
-// ======================================== //
-
-export default {
-	COUNTER_INCREMENT,
-	COUNTER_DECREMENT,
-	COUNTER_TRIPLE,
-	getCounter,
-	increment,
-	decrement,
-	triple,
-	actions,
-	reducer,
-	saga: sagaGenFac()
-};
