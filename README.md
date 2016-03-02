@@ -1,4 +1,5 @@
 # React Starter Stack
+![maintained](https://img.shields.io/badge/maintained-%E2%9C%94-green.svg)
 
 A boilerplate of things that I like in a React app.
 
@@ -14,7 +15,7 @@ A boilerplate of things that I like in a React app.
 - [x] [Rucksack](http://simplaio.github.io/rucksack/docs)
 - [x] [React Router Redux](https://github.com/reactjs/react-router-redux)
 - [x] [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension)
-- [ ] Redux effects
+- [x] [Redux Saga](https://github.com/yelouafi/redux-saga)
 - [x] Counter example
 
 ## Setup
